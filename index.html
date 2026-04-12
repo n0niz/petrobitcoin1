@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Petrobitcoin — Oil settled in Bitcoin</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-page:#0d0f10;--bg-card:#161a1d;--bg-surf:#1e2428;--bg-inp:#1e2428;
+  --border:rgba(255,255,255,0.07);--text:#f0f0f0;--muted:#8a9099;--hint:#525a62;
+  --btc:#F7931A;--btc-dim:rgba(247,147,26,0.10);--btc-glow:rgba(247,147,26,0.20);
+  --green:#1D9E75;--red:#E24B4A;
+  --rsm:8px;--rmd:12px;--rlg:16px;
+}
+@media(prefers-color-scheme:light){:root{
+  --bg-page:#f5f5f3;--bg-card:#fff;--bg-surf:#f0efea;--bg-inp:#f7f7f5;
+  --border:rgba(0,0,0,0.08);--text:#141414;--muted:#5c6370;--hint:#9aa0a8;
+  --btc-dim:rgba(247,147,26,0.08);--btc-glow:rgba(247,147,26,0.15);
+}}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-page);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+/* NAV */
+nav{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:0.5px solid var(--border);position:sticky;top:0;background:var(--bg-page);z-index:100}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-text{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.3px}
+.nav-badge{font-size:10px;padding:2px 8px;background:var(--btc-dim);color:var(--btc);border-radius:20px;border:0.5px solid var(--btc);font-weight:500}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color 0.15s}
+.nav-link:hover{color:var(--text)}
+.nav-cta{font-size:13px;font-weight:500;padding:8px 16px;background:var(--btc);color:white;border-radius:var(--rsm);text-decoration:none;transition:opacity 0.15s}
+.nav-cta:hover{opacity:0.85}
+
+/* HERO */
+.hero{text-align:center;padding:52px 24px 36px;max-width:640px}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border);color:var(--muted);margin-bottom:18px;background:var(--bg-surf)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+.hero h1{font-size:38px;font-weight:700;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px}
+.hero p{font-size:16px;color:var(--muted);line-height:1.6}
+.hero-quote{margin-top:18px;font-size:13px;color:var(--hint);font-style:italic;line-height:1.7}
+
+/* TICKER */
+.ticker-bar{width:100%;max-width:1100px;display:flex;gap:10px;padding:0 24px;margin-bottom:28px}
+.tick{flex:1;background:var(--bg-card);border:0.5px solid var(--border);border-radius:var(--rmd);padding:12px 16px}
+.tick-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px}
+.tick-val{font-size:16px;font-weight:600;color:var(--text);letter-spacing:-0.3px}
+.tick-change{font-size:11px;margin-top:2px}
+.up{color:var(--green)}.down{color:var(--red)}
+
+/* MAIN row3: tanker (2fr) + settlement (1fr) */
+.main{display:grid;grid-template-columns:2fr 320px;gap:16px;max-width:1100px;width:100%;padding:0 24px 80px;align-items:start}
+
+/* CARD */
+.card{background:var(--bg-card);border:0.5px solid var(--border);border-radius:var(--rlg);padding:20px;margin-bottom:14px}
+.card:last-child{margin-bottom:0}
+.sec-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px}
+
+/* PILL TABS */
+.pill-tabs{display:flex;gap:4px;background:var(--bg-surf);border-radius:var(--rsm);padding:3px;margin-bottom:14px}
+.pill-tab{flex:1;background:transparent;border:none;border-radius:6px;padding:7px 4px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s;text-align:center}
+.pill-tab:hover{color:var(--text)}
+.pill-tab.active{background:var(--bg-card);color:var(--text)}
+.pill-panel{display:none}.pill-panel.active{display:block}
+
+/* OIL GRADE */
+.grade-detail{background:var(--bg-surf);border-radius:var(--rsm);border:0.5px solid var(--border);padding:12px;margin-bottom:12px}
+.grade-price{font-size:26px;font-weight:700;color:var(--text);letter-spacing:-1px;margin-bottom:2px}
+.grade-change{font-size:12px;margin-bottom:8px}
+.grade-meta{font-size:11px;color:var(--muted);line-height:1.6}
+
+/* INPUTS */
+.input-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.input-label{font-size:12px;color:var(--muted);white-space:nowrap;min-width:90px}
+.input-wrap{flex:1;position:relative}
+.input-wrap input{width:100%;background:var(--bg-inp);border:0.5px solid var(--border);border-radius:var(--rsm);padding:9px 46px 9px 12px;font-size:14px;font-weight:600;color:var(--text);font-family:inherit;outline:none;transition:border-color 0.15s,box-shadow 0.15s}
+.input-wrap input:focus{border-color:var(--btc);box-shadow:0 0 0 3px var(--btc-glow)}
+.input-unit{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:500;color:var(--hint);pointer-events:none;text-transform:uppercase;letter-spacing:0.5px}
+.reset-btn{width:100%;background:transparent;border:0.5px solid var(--border);border-radius:var(--rsm);padding:8px;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;font-family:inherit;transition:border-color 0.15s,color 0.15s}
+.reset-btn:hover{border-color:var(--btc);color:var(--btc)}
+
+/* CENTER SECTION */
+.section-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3}
+.section-subtitle{font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.5}
+
+/* TANKER TABS */
+.tanker-tabs{display:flex;gap:4px;background:var(--bg-surf);border-radius:var(--rsm);padding:3px;margin-bottom:14px}
+.tanker-tab{flex:1;background:transparent;border:none;border-radius:6px;padding:7px 2px;font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s;text-align:center}
+.tanker-tab:hover{color:var(--text)}
+.tanker-tab.active{background:var(--bg-card);color:var(--btc)}
+.tanker-panel{display:none}.tanker-panel.active{display:block}
+.tanker-detail{background:var(--bg-surf);border-radius:var(--rsm);border:0.5px solid var(--border);padding:14px;margin-bottom:10px}
+.tanker-detail-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px}
+.tanker-detail-cap{font-size:11px;color:var(--muted);margin-bottom:12px}
+.tanker-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tstat{background:var(--bg-card);border:0.5px solid var(--border);border-radius:var(--rsm);padding:10px}
+.tstat-label{font-size:9px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.tstat-val{font-size:13px;font-weight:600;color:var(--text)}
+.tstat-val.btc{color:var(--btc)}
+
+/* RESULT */
+.result-panel{position:sticky;top:72px}
+.result-card{background:var(--bg-card);border:0.5px solid var(--btc);border-radius:var(--rlg);padding:20px;margin-bottom:10px;box-shadow:0 0 0 1px var(--btc-glow);position:sticky;top:72px}
+.result-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:6px}
+.result-btc-row{display:flex;align-items:baseline;gap:6px;margin-bottom:3px}
+.result-btc{font-size:28px;font-weight:700;color:var(--btc);letter-spacing:-1px;line-height:1}
+.result-currency{font-size:14px;font-weight:500;color:var(--muted)}
+.result-usd{font-size:12px;color:var(--muted);margin-bottom:14px}
+.breakdown-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
+.stat-box{background:var(--bg-surf);border-radius:var(--rsm);border:0.5px solid var(--border);padding:9px}
+.stat-label{font-size:9px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.stat-val{font-size:12px;font-weight:600;color:var(--text)}
+.cta-btn{width:100%;background:var(--btc);color:white;border:none;border-radius:var(--rsm);padding:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.15s,transform 0.1s;margin-bottom:6px}
+.cta-btn:hover{opacity:0.88}.cta-btn:active{transform:scale(0.98)}
+.sec-btn{width:100%;background:transparent;color:var(--muted);border:0.5px solid var(--border);border-radius:var(--rsm);padding:9px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:border-color 0.15s,color 0.15s}
+.sec-btn:hover{border-color:var(--btc);color:var(--btc)}
+.disclaimer{font-size:10px;color:var(--hint);text-align:center;line-height:1.6;margin-bottom:14px}
+
+/* RESOURCES */
+.res-tag{display:inline-block;font-size:9px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;color:var(--btc);background:var(--btc-dim);border:0.5px solid var(--btc);border-radius:20px;padding:2px 8px;margin-bottom:8px}
+.res-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:7px;letter-spacing:-0.3px}
+.res-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.res-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--btc);text-decoration:none;padding:8px 12px;border:0.5px solid var(--btc);border-radius:var(--rsm);background:var(--btc-dim);transition:background 0.15s,gap 0.15s}
+.res-link:hover{background:rgba(247,147,26,0.18);gap:10px}
+.res-link svg{width:12px;height:12px;flex-shrink:0}
+
+/* FOOTER */
+footer{width:100%;border-top:0.5px solid var(--border);padding:20px 32px;display:flex;justify-content:space-between;align-items:center}
+.footer-left{font-size:11px;color:var(--hint)}
+.footer-right{display:flex;gap:20px}
+.footer-link{font-size:11px;color:var(--hint);text-decoration:none}
+.footer-link:hover{color:var(--muted)}
+.footer-donate{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--btc);text-decoration:none;padding:6px 12px;border:0.5px solid var(--btc);border-radius:20px;background:var(--btc-dim);transition:background 0.15s,gap 0.15s}
+.footer-donate:hover{background:rgba(247,147,26,0.18);gap:9px}
+.footer-donate svg{flex-shrink:0}
+
+@media(max-width:900px){
+  .main{grid-template-columns:1fr;padding:0 16px 60px}
+  .result-panel{position:static}
+  .row2{grid-template-columns:1fr !important;padding:0 16px !important}
+  .ticker-bar{padding:0 16px;flex-wrap:wrap}
+  .tick{min-width:calc(50% - 5px)}
+  nav{padding:12px 16px}
+  footer{flex-direction:column;gap:10px;text-align:center}
+  .footer-right{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <svg width="36" height="36" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="55" cy="55" r="52" fill="#161a1d" stroke="#F7931A" stroke-width="4"/>
+      <path d="M55 18 C55 18 24 46 24 64 C24 84 38 96 55 96 C72 96 86 84 86 64 C86 46 55 18 55 18Z" fill="#F7931A"/>
+      <text x="55" y="76" text-anchor="middle" font-size="42" font-weight="700" fill="white" font-family="-apple-system,sans-serif">₿</text>
+    </svg>
+    <span class="nav-logo-text">Petrobitcoin</span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-badge">Beta</span>
+    <a class="nav-link" href="#">Docs</a>
+    <a class="nav-link" href="#">API</a>
+    <a class="nav-cta" href="#">Get started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag"><span class="live-dot"></span> Live market rates · Apr 12, 2026</div>
+  <h1>Petrobitcoin</h1>
+  <p>The system by which crude oil and petroleum products are priced, invoiced, and settled internationally using Bitcoin (BTC).</p>
+  <p class="hero-quote">"Where the petrodollar made the United States the indispensable nation of global energy trade, petrobitcoin makes every nation equally dispensable — and equally sovereign."</p>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="tick">
+    <div class="tick-label">Bitcoin price</div>
+    <div class="tick-val" id="btcPrice">$71,732</div>
+    <div class="tick-change" id="btcChange">−2.0% 24h</div>
+  </div>
+  <div class="tick">
+    <div class="tick-label" id="tickOilLabel">Oil price (Brent)</div>
+    <div class="tick-val" id="tickOilPrice">$95.20</div>
+    <div class="tick-change" id="tickOilChange">−0.75% 24h</div>
+  </div>
+  <div class="tick">
+    <div class="tick-label" id="tickBtcBblLabel">BTC / barrel (Brent)</div>
+    <div class="tick-val" id="tickBtcBbl">—</div>
+    <div class="tick-change" style="color:var(--muted)">per barrel fee</div>
+  </div>
+  <div class="tick">
+    <div class="tick-label" id="tickSatsBblLabel">Sats / barrel (Brent)</div>
+    <div class="tick-val" id="tickSatsBbl">—</div>
+    <div class="tick-change" style="color:var(--muted)">satoshis per bbl</div>
+  </div>
+  <div class="tick">
+    <div class="tick-label" id="tickBblBtcLabel">barrel / BTC (Brent)</div>
+    <div class="tick-val" id="tickBblBtc">—</div>
+    <div class="tick-change" style="color:var(--muted)">bbls per 1 BTC</div>
+  </div>
+  <div class="tick">
+    <div class="tick-label" id="tickBblSatsLabel">barrel / Sats (Brent)</div>
+    <div class="tick-val" id="tickBblSats">—</div>
+    <div class="tick-change" style="color:var(--muted)">bbls per 1 sat</div>
+  </div>
+</div>
+
+<!-- ROW 2: Oil Grade (left) + Resources (right) -->
+<div class="row2" style="width:100%;max-width:1100px;display:grid;grid-template-columns:340px 1fr;gap:16px;padding:0 24px;margin-bottom:16px">
+
+  <!-- Oil Grade card -->
+  <div class="card" style="margin-bottom:0">
+    <div class="sec-label">Oil grade</div>
+    <div class="pill-tabs" id="gradeTabs">
+      <button class="pill-tab active" data-grade="brent" onclick="selectGradeTab(this)">Brent</button>
+      <button class="pill-tab" data-grade="wti" onclick="selectGradeTab(this)">WTI</button>
+      <button class="pill-tab" data-grade="dubai" onclick="selectGradeTab(this)">Dubai</button>
+    </div>
+    <div class="pill-panel active" id="gradePanel-brent">
+      <div class="grade-detail">
+        <div class="grade-price" id="gradePrice-brent">$95.20</div>
+        <div class="grade-change down" id="gradeChange-brent">−0.75% 24h</div>
+        <div class="grade-meta">North Sea benchmark · ICE futures<br>Global reference for ~70% of traded crude</div>
+      </div>
+    </div>
+    <div class="pill-panel" id="gradePanel-wti">
+      <div class="grade-detail">
+        <div class="grade-price" id="gradePrice-wti">$96.57</div>
+        <div class="grade-change up" id="gradeChange-wti">+0.12% 24h</div>
+        <div class="grade-meta">West Texas Intermediate · NYMEX<br>US benchmark, Cushing, Oklahoma</div>
+      </div>
+    </div>
+    <div class="pill-panel" id="gradePanel-dubai">
+      <div class="grade-detail">
+        <div class="grade-price" id="gradePrice-dubai">$93.50</div>
+        <div class="grade-change" id="gradeChange-dubai" style="color:var(--muted)">Brent spread −$1.70</div>
+        <div class="grade-meta">Dubai/Oman sour crude · DME<br>Middle East benchmark for Asian markets</div>
+      </div>
+    </div>
+    <div class="input-row" style="margin-top:4px;margin-bottom:6px">
+      <div class="input-label">Override price</div>
+      <div class="input-wrap">
+        <input type="number" id="oilPriceInput" value="95.20" step="0.01" oninput="calculate()"/>
+        <span class="input-unit">USD</span>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetOilPrice()">↺ Reset to live price</button>
+  </div>
+
+  <!-- Resources card -->
+  <div class="card" style="margin-bottom:0">
+    <div class="sec-label">Resources</div>
+    <div class="pill-tabs" id="resTabs">
+      <button class="pill-tab active" onclick="showRes(0)">Straitwatch</button>
+      <button class="pill-tab" onclick="showRes(1)">Hormuz Monitor</button>
+      <button class="pill-tab" onclick="showRes(2)">Portwatch</button>
+    </div>
+    <div class="pill-panel active" id="resPanel0">
+      <div class="res-tag">Maritime &amp; Sanctions</div>
+      <div class="res-title">Straitwatch</div>
+      <div class="res-desc">Live maritime and sanctions monitoring for the Strait of Hormuz. Tracks vessel movements, flag states, and sanctions exposure in real time across the world's most critical energy chokepoint.</div>
+      <a class="res-link" href="https://straitwatch.lovable.app/" target="_blank" rel="noopener">Open Straitwatch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+    <div class="pill-panel" id="resPanel1">
+      <div class="res-tag">Live Intelligence</div>
+      <div class="res-title">Hormuz Strait Monitor</div>
+      <div class="res-desc">Live parameters, news feed, and war impact analysis. Aggregates shipping disruption signals, military incidents, and energy market data.</div>
+      <a class="res-link" href="https://hormuzstraitmonitor.com/" target="_blank" rel="noopener">Open Hormuz Monitor <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+    <div class="pill-panel" id="resPanel2">
+      <div class="res-tag">IMF · Trade Volumes</div>
+      <div class="res-title">Portwatch</div>
+      <div class="res-desc">IMF disruption monitor tracking daily transit calls and trade volumes across global ports. Early-warning signals for supply chain stress and commodity flow disruptions.</div>
+      <a class="res-link" href="https://portwatch.imf.org/pages/cc317ba850e34c4dadbead6f7b336fb1" target="_blank" rel="noopener">Open Portwatch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ROW 3: Tanker fees (left) + Total Settlement (right) -->
+<div class="main">
+
+  <!-- Tanker fees -->
+  <div style="grid-column:1/3">
+    <div class="card" style="margin-bottom:0">
+      <div class="section-title">Iran's sanctions in the form of tanker fees for the Strait of Hormuz</div>
+      <div class="section-subtitle">Iran's proposed transit fee of <strong style="color:var(--btc)">$1 per barrel</strong> for passage through the Strait of Hormuz, settled in Bitcoin. Fee rate sourced from Reuters / Bloomberg reporting, Apr 2026. Select a tanker class to calculate total BTC settlement.</div>
+
+      <div class="tanker-tabs" id="tankerTabs">
+        <button class="tanker-tab active" data-idx="0" onclick="selectTankerTab(this)">Panamax</button>
+        <button class="tanker-tab" data-idx="1" onclick="selectTankerTab(this)">Aframax</button>
+        <button class="tanker-tab" data-idx="2" onclick="selectTankerTab(this)">Suezmax</button>
+        <button class="tanker-tab" data-idx="3" onclick="selectTankerTab(this)">VLCC</button>
+        <button class="tanker-tab" data-idx="4" onclick="selectTankerTab(this)">ULCC</button>
+      </div>
+
+      <div class="tanker-panel active" id="tPanel-0">
+        <div class="tanker-detail">
+          <div class="tanker-detail-name">Panamax</div>
+          <div class="tanker-detail-cap">≈ 200,000 barrels · 25,000 DWT · Panama Canal–sized</div>
+          <div class="tanker-stats">
+            <div class="tstat"><div class="tstat-label">Barrels</div><div class="tstat-val">200,000</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (USD)</div><div class="tstat-val" id="tUsd-0">—</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (BTC)</div><div class="tstat-val btc" id="tBtc-0">—</div></div>
+            <div class="tstat"><div class="tstat-label">Total sats</div><div class="tstat-val" id="tSats-0">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="tanker-panel" id="tPanel-1">
+        <div class="tanker-detail">
+          <div class="tanker-detail-name">Aframax</div>
+          <div class="tanker-detail-cap">≈ 500,000 barrels · 80,000–120,000 DWT</div>
+          <div class="tanker-stats">
+            <div class="tstat"><div class="tstat-label">Barrels</div><div class="tstat-val">500,000</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (USD)</div><div class="tstat-val" id="tUsd-1">—</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (BTC)</div><div class="tstat-val btc" id="tBtc-1">—</div></div>
+            <div class="tstat"><div class="tstat-label">Total sats</div><div class="tstat-val" id="tSats-1">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="tanker-panel" id="tPanel-2">
+        <div class="tanker-detail">
+          <div class="tanker-detail-name">Suezmax</div>
+          <div class="tanker-detail-cap">≈ 750,000 barrels · 120,000–200,000 DWT</div>
+          <div class="tanker-stats">
+            <div class="tstat"><div class="tstat-label">Barrels</div><div class="tstat-val">750,000</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (USD)</div><div class="tstat-val" id="tUsd-2">—</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (BTC)</div><div class="tstat-val btc" id="tBtc-2">—</div></div>
+            <div class="tstat"><div class="tstat-label">Total sats</div><div class="tstat-val" id="tSats-2">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="tanker-panel" id="tPanel-3">
+        <div class="tanker-detail">
+          <div class="tanker-detail-name">VLCC</div>
+          <div class="tanker-detail-cap">≈ 2,000,000 barrels · 200,000–320,000 DWT</div>
+          <div class="tanker-stats">
+            <div class="tstat"><div class="tstat-label">Barrels</div><div class="tstat-val">2,000,000</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (USD)</div><div class="tstat-val" id="tUsd-3">—</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (BTC)</div><div class="tstat-val btc" id="tBtc-3">—</div></div>
+            <div class="tstat"><div class="tstat-label">Total sats</div><div class="tstat-val" id="tSats-3">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="tanker-panel" id="tPanel-4">
+        <div class="tanker-detail">
+          <div class="tanker-detail-name">ULCC</div>
+          <div class="tanker-detail-cap">≈ 3,000,000 barrels · 320,000+ DWT · Ultra-large</div>
+          <div class="tanker-stats">
+            <div class="tstat"><div class="tstat-label">Barrels</div><div class="tstat-val">3,000,000</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (USD)</div><div class="tstat-val" id="tUsd-4">—</div></div>
+            <div class="tstat"><div class="tstat-label">Fee (BTC)</div><div class="tstat-val btc" id="tBtc-4">—</div></div>
+            <div class="tstat"><div class="tstat-label">Total sats</div><div class="tstat-val" id="tSats-4">—</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-row" style="margin-top:4px;margin-bottom:0">
+        <div class="input-label">Custom barrels</div>
+        <div class="input-wrap">
+          <input type="number" id="barrelInput" value="200000" min="1" oninput="onCustomBarrel()" placeholder="Enter barrels"/>
+          <span class="input-unit">bbl</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total Settlement -->
+  <div>
+    <div class="result-card">
+      <div class="result-label">Total settlement · $1 / barrel fee</div>
+      <div class="result-btc-row">
+        <span class="result-btc" id="resultBtc">—</span>
+        <span class="result-currency">BTC</span>
+      </div>
+      <div class="result-usd" id="resultUsd">≈ — USD</div>
+      <hr style="border:none;border-top:0.5px solid rgba(247,147,26,0.18);margin:12px 0">
+      <div class="breakdown-grid">
+        <div class="stat-box"><div class="stat-label">Barrels</div><div class="stat-val" id="statBarrels">—</div></div>
+        <div class="stat-box"><div class="stat-label" id="statOilLabel">Oil value (Brent)</div><div class="stat-val" id="statOilUsd">—</div></div>
+        <div class="stat-box"><div class="stat-label">BTC / barrel</div><div class="stat-val" id="statBtcPerBbl">—</div></div>
+        <div class="stat-box"><div class="stat-label">Sats / barrel</div><div class="stat-val" id="statSatsPerBbl">—</div></div>
+      </div>
+      <button class="cta-btn" onclick="copyResult()">Copy payment amount</button>
+      <button class="sec-btn" onclick="window.print()">Print settlement</button>
+    </div>
+    <div class="disclaimer" id="disclaimer">Rates: BTC $71,732 · Brent $95.20<br>For indicative settlement purposes only.</div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">© 2026 Petrobitcoin · Oil settled in Bitcoin</div>
+  <div class="footer-right">
+    <a class="footer-donate" href="https://strike.me/n0niz/" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Donate via Strike
+    </a>
+    <a class="footer-link" href="#">Privacy</a>
+    <a class="footer-link" href="#">Terms</a>
+    <a class="footer-link" href="#">Contact</a>
+  </div>
+</footer>
+
+<script>
+const TANKERS=[
+  {name:'Panamax',barrels:200000},
+  {name:'Aframax',barrels:500000},
+  {name:'Suezmax',barrels:750000},
+  {name:'VLCC',barrels:2000000},
+  {name:'ULCC',barrels:3000000}
+];
+let activeTankerIdx=0;
+let activeGrade='brent';
+let livePrices={btc:71732,brent:95.20,wti:96.57,dubai:93.50};
+let liveBtc=71732;
+
+/* ── helpers ── */
+function fmt(n){return new Intl.NumberFormat('en-US').format(n)}
+function fmtUsd(n){
+  if(n>=1e9)return'$'+(n/1e9).toFixed(3)+'B';
+  if(n>=1e6)return'$'+(n/1e6).toFixed(2)+'M';
+  if(n>=1e3)return'$'+(n/1e3).toFixed(1)+'K';
+  return'$'+fmt(Math.round(n));
+}
+function fmtBtc(n){
+  if(n===0||!isFinite(n))return'—';
+  if(n>=1)return n.toFixed(4);
+  if(n>=0.0001)return n.toFixed(6);
+  return n.toFixed(8);
+}
+function fmtSats(n){return n>0?fmt(Math.round(n)):' —'}
+function setChange(el,pct,fallback){
+  if(!el)return;
+  if(pct===null){el.textContent=fallback||'';el.className='tick-change';return}
+  const sign=pct>=0?'+':'';
+  el.textContent=sign+pct.toFixed(2)+'% 24h';
+  el.className='tick-change '+(pct>=0?'up':'down');
+}
+function flash(id){
+  const el=document.getElementById(id);if(!el)return;
+  el.style.transition='color 0.2s';el.style.color='var(--btc)';
+  setTimeout(()=>{el.style.color=''},600);
+}
+const GRADE_NAMES={brent:'Brent',wti:'WTI',dubai:'Dubai'};
+
+/* ── update the 6 ticker tiles based on active grade + current oil price ── */
+function updateTickers(){
+  const oilPrice=parseFloat(document.getElementById('oilPriceInput').value)||livePrices[activeGrade];
+  const btcPrice=liveBtc||1;
+  const gName=GRADE_NAMES[activeGrade];
+
+  /* tile labels */
+  document.getElementById('tickOilLabel').textContent  =`Oil price (${gName})`;
+  document.getElementById('tickBtcBblLabel').textContent=`BTC / barrel (${gName})`;
+  document.getElementById('tickSatsBblLabel').textContent=`Sats / barrel (${gName})`;
+  document.getElementById('tickBblBtcLabel').textContent =`barrel / BTC (${gName})`;
+  document.getElementById('tickBblSatsLabel').textContent=`barrel / Sats (${gName})`;
+
+  /* tile values */
+  const btcPerBbl  = oilPrice / btcPrice;            /* how much BTC to buy 1 bbl */
+  const satsPerBbl = btcPerBbl * 1e8;                /* in sats */
+  const bblPerBtc  = btcPrice  / oilPrice;           /* barrels you get per 1 BTC  */
+  const bblPerSat  = bblPerBtc / 1e8;               /* barrels per 1 satoshi */
+
+  document.getElementById('tickOilPrice').textContent  = '$'+oilPrice.toFixed(2);
+  document.getElementById('tickBtcBbl').textContent    = fmtBtc(btcPerBbl);
+  document.getElementById('tickSatsBbl').textContent   = fmtSats(satsPerBbl);
+  document.getElementById('tickBblBtc').textContent    = bblPerBtc>=1 ? fmt(Math.round(bblPerBtc)) : bblPerBtc.toFixed(4);
+  document.getElementById('tickBblSats').textContent   = bblPerSat>=1 ? fmt(Math.round(bblPerSat)) : (bblPerSat>=0.001 ? bblPerSat.toFixed(6) : bblPerSat.toFixed(8));
+
+  /* sync oil change indicator */
+  const oilChangeEl=document.getElementById('tickOilChange');
+  const srcEl=document.getElementById('gradeChange-'+activeGrade);
+  if(oilChangeEl&&srcEl){
+    oilChangeEl.textContent=srcEl.textContent;
+    oilChangeEl.className=srcEl.className;
+  }
+}
+
+/* ── grade tab ── */
+function selectGradeTab(btn){
+  document.querySelectorAll('#gradeTabs .pill-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeGrade=btn.dataset.grade;
+  document.querySelectorAll('[id^="gradePanel-"]').forEach(p=>p.classList.remove('active'));
+  document.getElementById('gradePanel-'+activeGrade).classList.add('active');
+  document.getElementById('oilPriceInput').value=livePrices[activeGrade].toFixed(2);
+  updateTickers();
+  calculate();
+}
+
+/* ── reset oil price to live ── */
+function resetOilPrice(){
+  document.getElementById('oilPriceInput').value=livePrices[activeGrade].toFixed(2);
+  updateTickers();
+  calculate();
+}
+
+/* ── tanker tab ── */
+function selectTankerTab(btn){
+  document.querySelectorAll('.tanker-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeTankerIdx=parseInt(btn.dataset.idx);
+  document.querySelectorAll('.tanker-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tPanel-'+activeTankerIdx).classList.add('active');
+  document.getElementById('barrelInput').value=TANKERS[activeTankerIdx].barrels;
+  calculate();
+}
+function onCustomBarrel(){
+  document.querySelectorAll('.tanker-tab').forEach(b=>b.classList.remove('active'));
+  activeTankerIdx=-1;
+  document.querySelectorAll('.tanker-panel').forEach(p=>p.classList.remove('active'));
+  calculate();
+}
+
+/* ── resources tab ── */
+function showRes(i){
+  document.querySelectorAll('#resTabs .pill-tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+  document.querySelectorAll('[id^="resPanel"]').forEach((p,idx)=>p.classList.toggle('active',idx===i));
+}
+
+/* ── calculate settlement ── */
+function calculate(){
+  const barrels   = parseFloat(document.getElementById('barrelInput').value)||0;
+  const btcPrice  = liveBtc||1;
+  const FEE_PER_BBL = 1;                              /* Iran fee: $1 per barrel */
+  const totalUsd  = barrels * FEE_PER_BBL;
+  const totalBtc  = totalUsd / btcPrice;
+  const btcPerBbl = FEE_PER_BBL / btcPrice;
+  const satsPerBbl= Math.round(btcPerBbl * 1e8);
+  const gName     = GRADE_NAMES[activeGrade];
+
+  document.getElementById('resultBtc').textContent      = totalBtc>0 ? totalBtc.toFixed(8) : '—';
+  document.getElementById('resultUsd').textContent      = totalUsd>0 ? '≈ '+fmtUsd(totalUsd)+' USD · $1/bbl fee' : '≈ — USD';
+  document.getElementById('statBarrels').textContent    = barrels>0 ? fmt(barrels) : '—';
+  document.getElementById('statOilUsd').textContent     = totalUsd>0 ? fmtUsd(totalUsd) : '—';
+  document.getElementById('statBtcPerBbl').textContent  = btcPerBbl>0 ? btcPerBbl.toFixed(8) : '—';
+  document.getElementById('statSatsPerBbl').textContent = satsPerBbl>0 ? fmt(satsPerBbl)+' sats' : '—';
+  const lbl = document.getElementById('statOilLabel');
+  if(lbl) lbl.textContent = 'Fee total (USD)';
+
+  /* Per-tanker fee rows — fixed $1/bbl */
+  TANKERS.forEach((t,i)=>{
+    const feeUsd = t.barrels * FEE_PER_BBL;
+    const feeBtc = feeUsd / btcPrice;
+    const feeSats= Math.round(feeBtc * 1e8);
+    const eU = document.getElementById('tUsd-'+i);
+    const e1 = document.getElementById('tBtc-'+i);
+    const e2 = document.getElementById('tSats-'+i);
+    if(eU) eU.textContent = fmtUsd(feeUsd);
+    if(e1) e1.textContent = feeBtc.toFixed(6)+' BTC';
+    if(e2) e2.textContent = fmt(feeSats);
+  });
+
+  updateTickers();
+}
+
+function copyResult(){
+  const btc=document.getElementById('resultBtc').textContent;
+  if(btc==='—')return;
+  navigator.clipboard.writeText(btc).catch(()=>{});
+  const btn=document.querySelector('.cta-btn');
+  btn.textContent='✓ Copied';
+  setTimeout(()=>btn.textContent='Copy payment amount',2000);
+}
+
+/* ── live price fetching ── */
+async function fetchBTC(){
+  try{
+    const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT',{cache:'no-store'});
+    const d=await r.json();
+    const price=parseFloat(d.lastPrice),pct=parseFloat(d.priceChangePercent);
+    if(!isNaN(price)&&price>0){
+      liveBtc=price;
+      livePrices.btc=price;
+      document.getElementById('btcPrice').textContent='$'+fmt(Math.round(price));
+      setChange(document.getElementById('btcChange'),pct);
+      flash('btcPrice');
+    }
+  }catch(e){console.warn('BTC fetch failed',e)}
+}
+
+async function fetchOil(symbol){
+  const url=`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=2d`;
+  const proxy='https://api.allorigins.win/get?url='+encodeURIComponent(url);
+  try{
+    const r=await fetch(proxy,{cache:'no-store'});
+    const outer=await r.json();
+    const d=JSON.parse(outer.contents);
+    const meta=d.chart.result[0].meta;
+    const price=meta.regularMarketPrice||meta.previousClose;
+    const prev=meta.chartPreviousClose||meta.previousClose;
+    const pct=prev?((price-prev)/prev)*100:0;
+    return{price,pct};
+  }catch(e){return null}
+}
+
+function updateGradeDisplay(grade,price,pct){
+  const priceEl=document.getElementById('gradePrice-'+grade);
+  const changeEl=document.getElementById('gradeChange-'+grade);
+  if(priceEl)priceEl.textContent='$'+price.toFixed(2);
+  if(changeEl)setChange(changeEl,grade==='dubai'?null:pct,'Brent spread −$1.70');
+  /* if this grade is active & user hasn't overridden, update the input */
+  if(grade===activeGrade){
+    const cur=parseFloat(document.getElementById('oilPriceInput').value);
+    const live=livePrices[grade];
+    /* only auto-update if within 5% of previous live (i.e. not manually overridden) */
+    if(Math.abs(cur-live)/live<0.05){
+      document.getElementById('oilPriceInput').value=price.toFixed(2);
+    }
+  }
+  livePrices[grade]=price;
+}
+
+async function fetchAllOil(){
+  const[brent,wti]=await Promise.all([fetchOil('BZ=F'),fetchOil('CL=F')]);
+  if(brent&&brent.price>0){
+    updateGradeDisplay('brent',brent.price,brent.pct);
+    const dubai=+(brent.price-1.70).toFixed(2);
+    updateGradeDisplay('dubai',dubai,0);
+  }
+  if(wti&&wti.price>0){
+    updateGradeDisplay('wti',wti.price,wti.pct);
+  }
+}
+
+function stampUpdate(){
+  const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const d=document.getElementById('disclaimer');
+  if(d)d.innerHTML=`Rates updated: <strong>${t}</strong> · refreshes every 10s<br>For indicative settlement purposes only.`;
+}
+
+async function refreshAll(){
+  await Promise.all([fetchBTC(),fetchAllOil()]);
+  stampUpdate();
+  calculate();
+}
+
+calculate();
+refreshAll();
+setInterval(refreshAll,10000);
+</script>
+</body>
+</html>
