@@ -1,9 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- saved from url=(0063)file:///C:/Users/David%20Kiefner/Downloads/petrobitcoin_16.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Primary meta -->
 <title>Petrobitcoin — Oil settled in Bitcoin</title>
+<meta name="description" content="The system by which crude oil and petroleum products are priced, invoiced, and settled internationally using Bitcoin. Live Brent, WTI and Dubai crude prices with Iran Hormuz tanker fee calculator.">
+<meta name="author" content="Petrobitcoin.org">
+<meta name="robots" content="index, follow">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://www.petrobitcoin.org/">
+
+<!-- Open Graph (social sharing) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.petrobitcoin.org/">
+<meta property="og:title" content="Petrobitcoin — Oil settled in Bitcoin">
+<meta property="og:description" content="Live crude oil prices and Bitcoin settlement calculator. Iran Strait of Hormuz tanker fee converter at $1/barrel.">
+<meta property="og:site_name" content="Petrobitcoin.org">
+
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Petrobitcoin — Oil settled in Bitcoin">
+<meta name="twitter:description" content="Live crude oil prices and Bitcoin settlement calculator. Iran Strait of Hormuz tanker fee converter.">
+
+<!-- Security: upgrade insecure requests, prevent clickjacking -->
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+<!-- Theme colour for mobile browsers -->
+<meta name="theme-color" content="#0d0f10">
+<meta name="color-scheme" content="dark light">
+
+<!-- Favicon placeholder (replace with real icon) -->
+<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 100 100&#39;&gt;&lt;circle cx=&#39;50&#39; cy=&#39;50&#39; r=&#39;48&#39; fill=&#39;%23F7931A&#39;/&gt;&lt;text x=&#39;50&#39; y=&#39;68&#39; text-anchor=&#39;middle&#39; font-size=&#39;52&#39; font-weight=&#39;700&#39; fill=&#39;white&#39; font-family=&#39;sans-serif&#39;&gt;%E2%82%BF&lt;/text&gt;&lt;/svg&gt;">
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -136,14 +169,32 @@ footer{width:100%;border-top:0.5px solid var(--border);padding:20px 32px;display
 .footer-donate svg{flex-shrink:0}
 
 @media(max-width:900px){
-  .main{grid-template-columns:1fr;padding:0 16px 60px}
+  .main{grid-template-columns:1fr;padding:0 12px 60px}
   .result-panel{position:static}
-  .row2{grid-template-columns:1fr !important;padding:0 16px !important}
-  .ticker-bar{padding:0 16px;flex-wrap:wrap}
-  .tick{min-width:calc(50% - 5px)}
+  .row2{grid-template-columns:1fr !important;padding:0 12px !important}
+  .ticker-bar{padding:0 12px;flex-wrap:wrap;gap:8px}
+  .tick{min-width:calc(50% - 4px);flex:none}
   nav{padding:12px 16px}
-  footer{flex-direction:column;gap:10px;text-align:center}
-  .footer-right{justify-content:center}
+  footer{flex-direction:column;gap:12px;text-align:center;padding:16px}
+  .footer-right{justify-content:center;flex-wrap:wrap;gap:12px}
+  .hero{padding:36px 16px 28px}
+  .hero h1{font-size:28px}
+  .hero p{font-size:14px}
+  .hero-quote{font-size:12px}
+}
+@media(max-width:480px){
+  .tick{min-width:calc(50% - 4px)}
+  .tick-val{font-size:14px}
+  .tanker-tab{font-size:9px;padding:6px 1px}
+  .grade-price{font-size:22px}
+  .result-btc{font-size:24px}
+  .breakdown-grid{grid-template-columns:1fr 1fr}
+  .tanker-stats{grid-template-columns:1fr 1fr}
+  .card{padding:14px}
+  .section-title{font-size:13px}
+  nav{padding:10px 12px}
+  .nav-logo-text{font-size:14px}
+  .pill-tab{font-size:10px;padding:6px 3px}
 }
 </style>
 </head>
@@ -151,19 +202,16 @@ footer{width:100%;border-top:0.5px solid var(--border);padding:20px 32px;display
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">
+  <a class="nav-logo" href="file:///C:/Users/David%20Kiefner/Downloads/petrobitcoin_16.html#">
     <svg width="36" height="36" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="55" cy="55" r="52" fill="#161a1d" stroke="#F7931A" stroke-width="4"/>
-      <path d="M55 18 C55 18 24 46 24 64 C24 84 38 96 55 96 C72 96 86 84 86 64 C86 46 55 18 55 18Z" fill="#F7931A"/>
+      <circle cx="55" cy="55" r="52" fill="#161a1d" stroke="#F7931A" stroke-width="4"></circle>
+      <path d="M55 18 C55 18 24 46 24 64 C24 84 38 96 55 96 C72 96 86 84 86 64 C86 46 55 18 55 18Z" fill="#F7931A"></path>
       <text x="55" y="76" text-anchor="middle" font-size="42" font-weight="700" fill="white" font-family="-apple-system,sans-serif">₿</text>
     </svg>
     <span class="nav-logo-text">Petrobitcoin</span>
   </a>
   <div class="nav-right">
     <span class="nav-badge">Beta</span>
-    <a class="nav-link" href="#">Docs</a>
-    <a class="nav-link" href="#">API</a>
-    <a class="nav-cta" href="#">Get started</a>
   </div>
 </nav>
 
@@ -244,7 +292,7 @@ footer{width:100%;border-top:0.5px solid var(--border);padding:20px 32px;display
     <div class="input-row" style="margin-top:4px;margin-bottom:6px">
       <div class="input-label">Override price</div>
       <div class="input-wrap">
-        <input type="number" id="oilPriceInput" value="95.20" step="0.01" oninput="calculate()"/>
+        <input type="number" id="oilPriceInput" value="95.20" step="0.01" oninput="calculate()">
         <span class="input-unit">USD</span>
       </div>
     </div>
@@ -263,19 +311,19 @@ footer{width:100%;border-top:0.5px solid var(--border);padding:20px 32px;display
       <div class="res-tag">Maritime &amp; Sanctions</div>
       <div class="res-title">Straitwatch</div>
       <div class="res-desc">Live maritime and sanctions monitoring for the Strait of Hormuz. Tracks vessel movements, flag states, and sanctions exposure in real time across the world's most critical energy chokepoint.</div>
-      <a class="res-link" href="https://straitwatch.lovable.app/" target="_blank" rel="noopener">Open Straitwatch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="res-link" href="https://straitwatch.lovable.app/" target="_blank" rel="noopener">Open Straitwatch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
     </div>
     <div class="pill-panel" id="resPanel1">
       <div class="res-tag">Live Intelligence</div>
       <div class="res-title">Hormuz Strait Monitor</div>
       <div class="res-desc">Live parameters, news feed, and war impact analysis. Aggregates shipping disruption signals, military incidents, and energy market data.</div>
-      <a class="res-link" href="https://hormuzstraitmonitor.com/" target="_blank" rel="noopener">Open Hormuz Monitor <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="res-link" href="https://hormuzstraitmonitor.com/" target="_blank" rel="noopener">Open Hormuz Monitor <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
     </div>
     <div class="pill-panel" id="resPanel2">
       <div class="res-tag">IMF · Trade Volumes</div>
       <div class="res-title">Portwatch</div>
       <div class="res-desc">IMF disruption monitor tracking daily transit calls and trade volumes across global ports. Early-warning signals for supply chain stress and commodity flow disruptions.</div>
-      <a class="res-link" href="https://portwatch.imf.org/pages/cc317ba850e34c4dadbead6f7b336fb1" target="_blank" rel="noopener">Open Portwatch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="res-link" href="https://portwatch.imf.org/pages/cc317ba850e34c4dadbead6f7b336fb1" target="_blank" rel="noopener">Open Portwatch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"></path></svg></a>
     </div>
   </div>
 
@@ -362,7 +410,7 @@ footer{width:100%;border-top:0.5px solid var(--border);padding:20px 32px;display
       <div class="input-row" style="margin-top:4px;margin-bottom:0">
         <div class="input-label">Custom barrels</div>
         <div class="input-wrap">
-          <input type="number" id="barrelInput" value="200000" min="1" oninput="onCustomBarrel()" placeholder="Enter barrels"/>
+          <input type="number" id="barrelInput" value="200000" min="1" oninput="onCustomBarrel()" placeholder="Enter barrels">
           <span class="input-unit">bbl</span>
         </div>
       </div>
@@ -395,19 +443,27 @@ footer{width:100%;border-top:0.5px solid var(--border);padding:20px 32px;display
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-left">© 2026 Petrobitcoin · Oil settled in Bitcoin</div>
+  <div class="footer-left">© 2026 Petrobitcoin.org™ · All rights reserved</div>
   <div class="footer-right">
     <a class="footer-donate" href="https://strike.me/n0niz/" target="_blank" rel="noopener">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
       Donate via Strike
     </a>
-    <a class="footer-link" href="#">Privacy</a>
-    <a class="footer-link" href="#">Terms</a>
-    <a class="footer-link" href="#">Contact</a>
+    <a class="footer-link" href="file:///C:/Users/David%20Kiefner/Downloads/petrobitcoin_16.html#" onclick="openModal(&#39;privacy&#39;);return false;">Privacy</a>
+    <a class="footer-link" href="file:///C:/Users/David%20Kiefner/Downloads/petrobitcoin_16.html#" onclick="openModal(&#39;terms&#39;);return false;">Terms</a>
+    <a class="footer-link" href="file:///C:/cdn-cgi/l/email-protection#9efffaf3f7f0deeefbeaecf1fcf7eafdf1f7f0b0f1ecf9">Contact</a>
   </div>
 </footer>
 
-<script>
+<!-- MODAL OVERLAY -->
+<div id="modalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;overflow-y:auto;padding:24px 16px;" onclick="if(event.target===this)closeModal()">
+  <div id="modalBox" style="max-width:680px;margin:0 auto;background:var(--bg-card);border:0.5px solid var(--border);border-radius:var(--rlg);padding:32px 28px;position:relative;">
+    <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="file:///C:/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const TANKERS=[
   {name:'Panamax',barrels:200000},
   {name:'Aframax',barrels:500000},
@@ -573,7 +629,10 @@ function copyResult(){
 /* ── live price fetching ── */
 async function fetchBTC(){
   try{
-    const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT',{cache:'no-store'});
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),6000);
+    const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT',{cache:'no-store',signal:ctrl.signal});
+    clearTimeout(timer);
     const d=await r.json();
     const price=parseFloat(d.lastPrice),pct=parseFloat(d.priceChangePercent);
     if(!isNaN(price)&&price>0){
@@ -586,19 +645,66 @@ async function fetchBTC(){
   }catch(e){console.warn('BTC fetch failed',e)}
 }
 
-async function fetchOil(symbol){
-  const url=`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=2d`;
-  const proxy='https://api.allorigins.win/get?url='+encodeURIComponent(url);
+async function fetchWithTimeout(url, ms=7000){
+  const ctrl=new AbortController();
+  const t=setTimeout(()=>ctrl.abort(),ms);
   try{
-    const r=await fetch(proxy,{cache:'no-store'});
-    const outer=await r.json();
-    const d=JSON.parse(outer.contents);
-    const meta=d.chart.result[0].meta;
+    const r=await fetch(url,{cache:'no-store',signal:ctrl.signal,headers:{'Accept':'application/json'}});
+    clearTimeout(t);
+    return r;
+  }catch(e){clearTimeout(t);throw e;}
+}
+
+async function fetchOilYahoo(symbol){
+  /* corsproxy.io is HTTPS-native, no key, production-grade, used by Uniswap & others */
+  const yahooUrl=`https://query2.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=5d&includePrePost=false`;
+  const proxyUrl=`https://corsproxy.io/?url=${encodeURIComponent(yahooUrl)}`;
+  try{
+    const r=await fetchWithTimeout(proxyUrl,7000);
+    if(!r.ok) return null;
+    const json=await r.json();
+    const meta=json?.chart?.result?.[0]?.meta;
+    if(!meta) return null;
     const price=meta.regularMarketPrice||meta.previousClose;
     const prev=meta.chartPreviousClose||meta.previousClose;
+    if(!price||price<=0) return null;
     const pct=prev?((price-prev)/prev)*100:0;
-    return{price,pct};
-  }catch(e){return null}
+    return{price,pct,source:'yahoo'};
+  }catch(e){return null;}
+}
+
+async function fetchOilEIA(seriesId){
+  /* EIA Open Data — US government, CORS-enabled, DEMO_KEY = 1000 req/day free, no signup */
+  const url=`https://api.eia.gov/v2/petroleum/pri/spt/data/?api_key=DEMO_KEY&frequency=daily&data[0]=value&facets[series][]=${seriesId}&sort[0][column]=period&sort[0][direction]=desc&length=5`;
+  try{
+    const r=await fetchWithTimeout(url,7000);
+    if(!r.ok) return null;
+    const json=await r.json();
+    const rows=json?.response?.data;
+    if(!rows||rows.length<2) return null;
+    const price=parseFloat(rows[0].value);
+    const prev=parseFloat(rows[1].value);
+    if(!price||price<=0) return null;
+    const pct=prev?((price-prev)/prev)*100:0;
+    return{price,pct,source:'eia'};
+  }catch(e){return null;}
+}
+
+async function fetchOil(type){
+  /* type: 'brent' | 'wti' */
+  const yahooSym = type==='brent'?'BZ=F':'CL=F';
+  const eiaSeries = type==='brent'?'RBRTE':'RWTC';  /* EIA official spot series IDs */
+
+  /* Try Yahoo via corsproxy first (intraday, fresher) */
+  const y = await fetchOilYahoo(yahooSym);
+  if(y) return y;
+
+  /* Fallback: EIA official government data (1-day lag but always works) */
+  const e = await fetchOilEIA(eiaSeries);
+  if(e) return e;
+
+  console.warn('All oil sources failed for',type);
+  return null;
 }
 
 function updateGradeDisplay(grade,price,pct){
@@ -619,7 +725,7 @@ function updateGradeDisplay(grade,price,pct){
 }
 
 async function fetchAllOil(){
-  const[brent,wti]=await Promise.all([fetchOil('BZ=F'),fetchOil('CL=F')]);
+  const[brent,wti]=await Promise.all([fetchOil('brent'),fetchOil('wti')]);
   if(brent&&brent.price>0){
     updateGradeDisplay('brent',brent.price,brent.pct);
     const dubai=+(brent.price-1.70).toFixed(2);
@@ -630,21 +736,108 @@ async function fetchAllOil(){
   }
 }
 
-function stampUpdate(){
+function stampUpdate(oilSource){
   const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const src=oilSource==='eia'?'EIA gov data':'Yahoo Finance futures';
   const d=document.getElementById('disclaimer');
-  if(d)d.innerHTML=`Rates updated: <strong>${t}</strong> · refreshes every 10s<br>For indicative settlement purposes only.`;
+  if(d)d.innerHTML=`Rates updated: <strong>${t}</strong> · refreshes every 10s · oil: ${src}<br>For indicative settlement purposes only.`;
 }
 
 async function refreshAll(){
-  await Promise.all([fetchBTC(),fetchAllOil()]);
-  stampUpdate();
+  const[,oilResults]=await Promise.all([fetchBTC(),Promise.all([fetchOil('brent'),fetchOil('wti')])]);
+  const oilSource=oilResults?.[0]?.source||'unknown';
+  /* update displays */
+  if(oilResults[0]&&oilResults[0].price>0){
+    updateGradeDisplay('brent',oilResults[0].price,oilResults[0].pct);
+    updateGradeDisplay('dubai',+(oilResults[0].price-1.70).toFixed(2),0);
+  }
+  if(oilResults[1]&&oilResults[1].price>0){
+    updateGradeDisplay('wti',oilResults[1].price,oilResults[1].pct);
+  }
+  stampUpdate(oilSource);
   calculate();
 }
 
 calculate();
 refreshAll();
 setInterval(refreshAll,10000);
-</script>
-</body>
-</html>
+
+/* ── modal pages ── */
+function openModal(page){
+  document.getElementById('modalContent').innerHTML = page==='privacy' ? privacyHTML() : termsHTML();
+  document.getElementById('modalOverlay').style.display='block';
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modalOverlay').style.display='none';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+function mStyle(){ return `<style>
+  .mp h2{font-size:20px;font-weight:700;color:var(--text);margin:0 0 6px;letter-spacing:-0.3px}
+  .mp h3{font-size:13px;font-weight:700;color:var(--text);margin:20px 0 6px;text-transform:uppercase;letter-spacing:0.5px}
+  .mp p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:10px}
+  .mp ul{font-size:13px;color:var(--muted);line-height:1.8;padding-left:18px;margin-bottom:10px}
+  .mp .badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--btc-dim);color:var(--btc);border:0.5px solid var(--btc);margin-bottom:16px}
+  .mp .divider{border:none;border-top:0.5px solid var(--border);margin:18px 0}
+  .mp a{color:var(--btc)}
+</style>`; }
+
+function privacyHTML(){ return mStyle()+`<div class="mp">
+<div class="badge">GDPR · European Union</div>
+<h2>Privacy Policy</h2>
+<p>Last updated: April 2026 · Petrobitcoin.org™</p>
+<hr class="divider">
+<h3>1. Who we are</h3>
+<p>Petrobitcoin.org is a publicly accessible financial information tool operated for educational and informational purposes. For GDPR purposes, the data controller is reachable at <a href="mailto:admin@petrobitcoin.org">admin@petrobitcoin.org</a>.</p>
+<h3>2. Data we collect</h3>
+<p>Petrobitcoin.org does not collect, store, or process any personal data. The site contains no user accounts, no registration forms, no cookies of our own, and no tracking or analytics scripts.</p>
+<p>All calculations are performed entirely client-side in your browser. No data you enter — including barrel volumes or price overrides — is transmitted to any server.</p>
+<h3>3. Third-party data sources</h3>
+<p>To display live market prices, this site makes outbound requests from your browser to the following third-party services. These requests may expose your IP address to those services under their own privacy policies:</p>
+<ul>
+  <li><strong>Binance API</strong> (api.binance.com) — live Bitcoin price</li>
+  <li><strong>Yahoo Finance via allorigins.win proxy</strong> — Brent and WTI crude oil futures prices</li>
+</ul>
+<p>We do not control these services. Please review their respective privacy policies. These requests are made automatically every 10 seconds while you use the site.</p>
+<h3>4. Cookies</h3>
+<p>This site sets no cookies, first-party or third-party.</p>
+<h3>5. Your rights under GDPR</h3>
+<p>As we do not collect personal data, there is no personal data to access, rectify, erase, port, or restrict. If you have questions about this policy, contact us at <a href="mailto:admin@petrobitcoin.org">admin@petrobitcoin.org</a>.</p>
+<h3>6. Legal basis</h3>
+<p>As no personal data is processed, no legal basis under Article 6 GDPR is required. The site functions as a read-only informational tool.</p>
+<h3>7. Changes to this policy</h3>
+<p>We may update this policy as the site evolves. The date at the top of this page reflects the most recent revision.</p>
+</div>`; }
+
+function termsHTML(){ return mStyle()+`<div class="mp">
+<div class="badge">Terms of Use</div>
+<h2>Terms & Conditions</h2>
+<p>Last updated: April 2026 · Petrobitcoin.org™</p>
+<hr class="divider">
+<h3>1. Acceptance</h3>
+<p>By accessing Petrobitcoin.org you agree to these terms. If you do not agree, please discontinue use.</p>
+<h3>2. Nature of the service</h3>
+<p>Petrobitcoin.org is an informational and educational tool. It provides indicative calculations for converting oil cargo volumes and transit fees into Bitcoin equivalents. Nothing on this site constitutes financial, investment, trading, or legal advice. All figures are indicative only and must be independently verified before use in any commercial transaction.</p>
+<h3>3. Sources of market data</h3>
+<p>Live market data displayed on this site is sourced from the following providers. Prices may be delayed, subject to error, or unavailable at any time:</p>
+<ul>
+  <li><strong>Bitcoin (BTC/USD)</strong> — Binance public API (api.binance.com). Binance is the world's largest cryptocurrency exchange by trading volume.</li>
+  <li><strong>Brent Crude Oil (BZ=F)</strong> — ICE Brent futures via Yahoo Finance API. Brent is the primary global crude benchmark.</li>
+  <li><strong>WTI Crude Oil (CL=F)</strong> — NYMEX WTI futures via Yahoo Finance API. WTI is the primary North American crude benchmark.</li>
+  <li><strong>Dubai Crude</strong> — Estimated as Brent minus the historical Dubai/Brent spread (~$1.70/bbl). Not independently sourced.</li>
+  <li><strong>Iran Strait of Hormuz transit fee ($1/barrel)</strong> — Based on reporting by Reuters and Bloomberg, April 2026. This figure is indicative and subject to change.</li>
+</ul>
+<h3>4. AI model disclosure</h3>
+<p>This website was designed and built with assistance from <strong>Claude</strong>, an AI assistant developed by <a href="https://www.anthropic.com" target="_blank" rel="noopener">Anthropic</a>. The model used is Claude Sonnet (claude-sonnet-4-6). Petrobitcoin.org is not affiliated with Anthropic.</p>
+<h3>5. Intellectual property</h3>
+<p>The name "Petrobitcoin", the Petrobitcoin logo, and the content of this site are the property of Petrobitcoin.org™. All rights reserved. The concept of "petrobitcoin" as defined on this site — the system by which crude oil and petroleum products are priced, invoiced, and settled internationally using Bitcoin — is original to this publication.</p>
+<h3>6. Disclaimer of warranties</h3>
+<p>This site is provided "as is" without warranties of any kind. We do not guarantee the accuracy, completeness, or timeliness of any data. Market prices are volatile and may not reflect current conditions.</p>
+<h3>7. Limitation of liability</h3>
+<p>Petrobitcoin.org and its operators shall not be liable for any loss or damage arising from reliance on information provided on this site, including but not limited to trading losses, financial decisions, or errors in price data.</p>
+<h3>8. Governing law</h3>
+<p>These terms are governed by the laws of the European Union and the jurisdiction in which the operator is resident, to the extent applicable.</p>
+<h3>9. Contact</h3>
+<p>For a</script></body></html>
